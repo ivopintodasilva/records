@@ -1,0 +1,40 @@
+opt_in_rules:
+  - closure_end_indentation
+  - closure_spacing
+  - explicit_init
+  - fatal_error_message
+  - first_where
+  - implicit_return
+  - modifier_order
+  - multiline_arguments
+  - multiline_parameters
+  - no_space_in_method_call
+  - trailing_closure
+  - unused_import
+  - vertical_parameter_alignment_on_call
+
+excluded:
+  - .build
+  - Carthage
+  - Pods
+
+line_length:
+  warning: 120
+  error: 160
+
+function_body_length:
+  warning: 80
+  error: 120
+
+type_body_length:
+  warning: 300
+  error: 450
+
+identifier_name:
+  min_length:
+    warning: 2
+  excluded:
+    - id
+    - x
+    - y
+    - z

@@ -1,0 +1,8 @@
+--indent 2
+--swiftversion 5.9
+--wraparguments before-first
+--wrapparameters before-first
+--binarygrouping 4,8
+--octalgrouping 4,8
+--hexgrouping 4,8
+--selfrequired true

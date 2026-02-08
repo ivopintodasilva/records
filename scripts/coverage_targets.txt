@@ -1,0 +1,5 @@
+# One target name per line. These should be the module targets you want enforced.
+# Example:
+# FeatureLibrary
+# FeatureLibraryTests
+records

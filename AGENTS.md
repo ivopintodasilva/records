@@ -23,6 +23,11 @@ These are mandatory engineering guardrails for this repo.
 - Each feature is its own Swift Package with `Sources`, `Tests`, and `DemoApp` targets.
 - Feature modules may depend on each other for now, but keep boundaries clean and APIs explicit.
 - Public API must be minimal and documented.
+- Naming conventions:
+  - Feature modules must end with `Feature`.
+  - Stateful services must end with `Service`.
+  - Stateless clients must end with `Client`.
+- Use `/Users/ivo/Projects/records/scripts/new-feature.sh` to scaffold new feature modules.
 
 ## Testing
 - Unit + integration tests for all logic-layer changes.

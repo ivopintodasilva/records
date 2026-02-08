@@ -5,7 +5,7 @@ ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 
 PROJECT_PATH=${PROJECT_PATH:-"$ROOT_DIR/records.xcodeproj"}
 SCHEME=${SCHEME:-"records"}
-DESTINATION=${DESTINATION:-"platform=iOS Simulator,name=iPhone 15"}
+DESTINATION=${DESTINATION:-"platform=iOS Simulator,name=iPhone 17"}
 RESULT_BUNDLE=${RESULT_BUNDLE:-"/tmp/records-tests.xcresult"}
 COVERAGE_THRESHOLD=${COVERAGE_THRESHOLD:-0.8}
 TARGETS_FILE=${TARGETS_FILE:-"$ROOT_DIR/scripts/coverage_targets.txt"}

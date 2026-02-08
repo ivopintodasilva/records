@@ -1,7 +1,6 @@
+@testable import CollectionFeature
 import ComposableArchitecture
 import XCTest
-
-@testable import CollectionFeature
 
 final class CollectionFeatureTests: XCTestCase {
   func testAddRecord() async {

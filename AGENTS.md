@@ -45,3 +45,6 @@ These are mandatory engineering guardrails for this repo.
 ## PR Format
 - PR descriptions must be valid Markdown with real newlines, not escaped `\\n` characters.
 - Use sections: `Summary` and `Testing`.
+
+## Git Hygiene
+- Never commit directly on `main`. Always create a `codex/*` branch first.

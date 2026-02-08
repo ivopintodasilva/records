@@ -15,6 +15,9 @@ opt_in_rules:
 analyzer_rules:
   - unused_import
 
+disabled_rules:
+  - trailing_comma
+
 excluded:
   - .build
   - Carthage

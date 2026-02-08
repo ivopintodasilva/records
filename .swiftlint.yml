@@ -10,8 +10,10 @@ opt_in_rules:
   - multiline_parameters
   - no_space_in_method_call
   - trailing_closure
-  - unused_import
   - vertical_parameter_alignment_on_call
+
+analyzer_rules:
+  - unused_import
 
 excluded:
   - .build

@@ -1,5 +1,5 @@
-import ComposableArchitecture
 import CollectionFeature
+import ComposableArchitecture
 import SwiftUI
 
 @main

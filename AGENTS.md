@@ -36,3 +36,7 @@ These are mandatory engineering guardrails for this repo.
 - SwiftLint and SwiftFormat are required locally and in CI.
 - CI runs on macOS only.
 - Git hooks: `pre-commit` runs SwiftFormat and SwiftLint.
+
+## PR Format
+- PR descriptions must be valid Markdown with real newlines, not escaped `\\n` characters.
+- Use sections: `Summary` and `Testing`.

@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		D013FB2E678F53227506ABF4 /* CollectionFeature in Frameworks */ = {isa = PBXBuildFile; productRef = 16AC638AFD768BA5907CC36F /* CollectionFeature */; };
+		127C1446BB4CC35C436C8091 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = F930B3A200DB3C8F0B173503 /* ComposableArchitecture */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		9227ED2A2F3914250090D95B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -52,6 +57,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D013FB2E678F53227506ABF4 /* CollectionFeature in Frameworks */,
+				127C1446BB4CC35C436C8091 /* ComposableArchitecture in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +119,8 @@
 			);
 			name = records;
 			packageProductDependencies = (
+				16AC638AFD768BA5907CC36F /* CollectionFeature */,
+				F930B3A200DB3C8F0B173503 /* ComposableArchitecture */,
 			);
 			productName = records;
 			productReference = 9227ED1C2F3914240090D95B /* records.app */;
@@ -195,6 +204,10 @@
 			);
 			mainGroup = 9227ED132F3914240090D95B;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				EF58B9772D359EEEE45B7D9D /* CollectionFeature */,
+				265B62F046D672C7D65D4114 /* swift-composable-architecture */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 9227ED1D2F3914240090D95B /* Products */;
 			projectDirPath = "";
@@ -206,6 +219,37 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		265B62F046D672C7D65D4114 /* swift-composable-architecture */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.22.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		EF58B9772D359EEEE45B7D9D /* CollectionFeature */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/CollectionFeature;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		16AC638AFD768BA5907CC36F /* CollectionFeature */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CollectionFeature;
+			package = EF58B9772D359EEEE45B7D9D /* CollectionFeature */;
+		};
+		F930B3A200DB3C8F0B173503 /* ComposableArchitecture */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ComposableArchitecture;
+			package = 265B62F046D672C7D65D4114 /* swift-composable-architecture */;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin PBXResourcesBuildPhase section */
 		9227ED1A2F3914240090D95B /* Resources */ = {

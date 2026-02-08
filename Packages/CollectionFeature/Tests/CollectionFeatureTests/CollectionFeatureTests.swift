@@ -10,7 +10,7 @@ final class CollectionFeatureTests: XCTestCase {
       $0.uuid = .incrementing
     }
 
-    await store.send(.binding(.set(\.newRecordTitle, "Kind of Blue"))) {
+    await store.send(.newRecordTitleChanged("Kind of Blue")) {
       $0.newRecordTitle = "Kind of Blue"
     }
 

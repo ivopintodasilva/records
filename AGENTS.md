@@ -33,6 +33,7 @@ These are mandatory engineering guardrails for this repo.
 - Unit + integration tests for all logic-layer changes.
 - Coverage is enforced per module (initial threshold: 80%).
 - Prefer TCA TestStore patterns as documented by TCA.
+- Never commit or push code that has not been built and tested (at least the affected targets).
 
 ## Dependencies
 - All dependencies must be injected using TCA's `swift-dependencies` library.
@@ -45,3 +46,7 @@ These are mandatory engineering guardrails for this repo.
 ## PR Format
 - PR descriptions must be valid Markdown with real newlines, not escaped `\\n` characters.
 - Use sections: `Summary` and `Testing`.
+
+## Git Hygiene
+- Never commit directly on `main`. Always create a `codex/*` branch first.
+- Always build and run relevant tests before committing or pushing.

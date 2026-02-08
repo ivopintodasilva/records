@@ -5,17 +5,17 @@
 //  Created by Ivo Silva on 08/02/2026.
 //
 
+import CollectionFeature
+import ComposableArchitecture
 import SwiftUI
 
 struct ContentView: View {
+  private let store = Store(initialState: CollectionFeature.State()) {
+    CollectionFeature()
+  }
+
   var body: some View {
-    VStack {
-      Image(systemName: "globe")
-        .imageScale(.large)
-        .foregroundStyle(.tint)
-      Text("Hello, world!")
-    }
-    .padding()
+    CollectionFeatureView(store: store)
   }
 }
 

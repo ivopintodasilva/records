@@ -9,7 +9,7 @@ public struct CollectionFeature {
   @ObservableState
   public struct State: Equatable {
     public var records: IdentifiedArrayOf<Record> = []
-    @BindingState public var newRecordTitle: String = ""
+    public var newRecordTitle: String = ""
 
     public init() {}
   }
@@ -24,15 +24,14 @@ public struct CollectionFeature {
     }
   }
 
-  public enum Action: BindableAction {
+  public enum Action {
     case addButtonTapped
-    case binding(BindingAction<State>)
+    case newRecordTitleChanged(String)
   }
 
   @Dependency(\.uuid) private var uuid
 
   public var body: some Reducer<State, Action> {
-    BindingReducer()
     Reduce { state, action in
       switch action {
       case .addButtonTapped:
@@ -42,7 +41,8 @@ public struct CollectionFeature {
         state.newRecordTitle = ""
         return .none
 
-      case .binding:
+      case let .newRecordTitleChanged(value):
+        state.newRecordTitle = value
         return .none
       }
     }
@@ -50,40 +50,46 @@ public struct CollectionFeature {
 }
 
 public struct CollectionFeatureView: View {
-  @Perception.Bindable private var store: StoreOf<CollectionFeature>
+  private let store: StoreOf<CollectionFeature>
 
   public init(store: StoreOf<CollectionFeature>) {
     self.store = store
   }
 
   public var body: some View {
-    WithPerceptionTracking {
+    WithViewStore(store, observe: { $0 }, content: { viewStore in
       VStack(alignment: .leading, spacing: 12) {
         Text("My Collection")
           .font(.title)
 
         HStack {
-          TextField("Record title", text: $store.newRecordTitle)
-            .textFieldStyle(.roundedBorder)
+          TextField(
+            "Record title",
+            text: viewStore.binding(
+              get: \.newRecordTitle,
+              send: CollectionFeature.Action.newRecordTitleChanged
+            )
+          )
+          .textFieldStyle(.roundedBorder)
 
           Button("Add") {
-            store.send(.addButtonTapped)
+            viewStore.send(.addButtonTapped)
           }
           .buttonStyle(.borderedProminent)
         }
 
-        if store.records.isEmpty {
+        if viewStore.records.isEmpty {
           Text("No records yet")
             .foregroundStyle(.secondary)
         } else {
           List {
-            ForEach(store.records) { record in
+            ForEach(viewStore.records) { record in
               Text(record.title)
             }
           }
         }
       }
       .padding()
-    }
+    })
   }
 }

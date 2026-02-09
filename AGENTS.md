@@ -40,7 +40,7 @@ These are mandatory engineering guardrails for this repo.
 - All dependencies must be injected using TCA's `swift-dependencies` library.
 
 ## Tooling
-- SwiftLint and SwiftFormat are required locally and in CI.
+- SwiftLint and SwiftFormat must run via SwiftPM plugins from `RecordsKit` (no local installs).
 - CI runs on macOS only.
 - Git hooks: `pre-commit` runs SwiftFormat and SwiftLint.
 

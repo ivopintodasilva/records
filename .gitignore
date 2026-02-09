@@ -1,2 +1,7 @@
 # Xcode user state
 **/xcuserdata/
+
+# SwiftPM build artifacts
+**/.build/
+**/.swiftpm/
+**/Package.resolved

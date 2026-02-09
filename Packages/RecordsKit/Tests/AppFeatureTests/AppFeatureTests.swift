@@ -3,7 +3,7 @@ import ComposableArchitecture
 import XCTest
 
 final class AppFeatureTests: XCTestCase {
-  func testInitialState() async {
+  func testInitialState() {
     let store = TestStore(initialState: AppFeature.State()) {
       AppFeature()
     }

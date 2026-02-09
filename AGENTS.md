@@ -51,3 +51,4 @@ These are mandatory engineering guardrails for this repo.
 ## Git Hygiene
 - Never commit directly on `main`. Always create a `codex/*` branch first.
 - Always build and run relevant tests before committing or pushing.
+- Always pull the latest `main`, branch from it, and keep each new piece of work on its own branch.

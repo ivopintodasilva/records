@@ -4,7 +4,7 @@
 - A minimal collection list feature with add capability and a basic list UI.
 
 ## Motivation
-- Establish the first modular feature and testing patterns.
+- Establish the first feature and testing patterns.
 - Prove the TCA + swift-dependencies baseline in a real module.
 
 ## Scope
@@ -17,9 +17,9 @@
   - Sharing
 
 ## Decisions
-- The feature is a standalone Swift Package with `Sources`, `Tests`, and `DemoApps`.
+- The feature is a target inside the `RecordsKit` package with `Sources`, `Tests`, and `DemoApps`.
 - Dependencies are injected using `swift-dependencies`.
-- UI is included in the feature module for now.
+- UI is included in the feature target for now.
 
 ## Risks & Mitigations
 - Risk: Demo app is not wired into a runnable Xcode target yet.

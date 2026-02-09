@@ -8,55 +8,30 @@ fi
 
 NAME="$1"
 ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-PACKAGE_DIR="$ROOT_DIR/Packages/$NAME"
+PKG_DIR="$ROOT_DIR/Packages/RecordsKit"
+PKG_FILE="$PKG_DIR/Package.swift"
 
 if [[ ! "$NAME" =~ Feature$ ]]; then
   echo "Feature name must end with 'Feature' (example: CollectionFeature)." >&2
   exit 1
 fi
 
-if [ -d "$PACKAGE_DIR" ]; then
-  echo "Package already exists: $PACKAGE_DIR" >&2
+if [ ! -f "$PKG_FILE" ]; then
+  echo "RecordsKit package not found at $PKG_FILE" >&2
+  exit 1
+fi
+
+if [ -d "$PKG_DIR/Sources/$NAME" ]; then
+  echo "Target already exists: $PKG_DIR/Sources/$NAME" >&2
   exit 1
 fi
 
 mkdir -p \
-  "$PACKAGE_DIR/Sources/$NAME" \
-  "$PACKAGE_DIR/Tests/${NAME}Tests" \
-  "$PACKAGE_DIR/DemoApps/${NAME}Demo"
+  "$PKG_DIR/Sources/$NAME" \
+  "$PKG_DIR/Tests/${NAME}Tests" \
+  "$PKG_DIR/DemoApps/${NAME}Demo"
 
-cat > "$PACKAGE_DIR/Package.swift" <<PKG
-// swift-tools-version: 5.9
-
-import PackageDescription
-
-let package = Package(
-  name: "$NAME",
-  platforms: [.iOS(.v16)],
-  products: [
-    .library(name: "$NAME", targets: ["$NAME"])
-  ],
-  dependencies: [
-    .package(url: "https://github.com/pointfreeco/swift-composable-architecture", from: "1.22.3"),
-    .package(url: "https://github.com/pointfreeco/swift-dependencies", from: "1.10.0")
-  ],
-  targets: [
-    .target(
-      name: "$NAME",
-      dependencies: [
-        .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
-        .product(name: "Dependencies", package: "swift-dependencies")
-      ]
-    ),
-    .testTarget(
-      name: "${NAME}Tests",
-      dependencies: ["$NAME"]
-    )
-  ]
-)
-PKG
-
-cat > "$PACKAGE_DIR/Sources/$NAME/${NAME}.swift" <<SRC
+cat > "$PKG_DIR/Sources/$NAME/${NAME}.swift" <<SRC
 import ComposableArchitecture
 import Dependencies
 import SwiftUI
@@ -93,24 +68,23 @@ public struct ${NAME}View: View {
 }
 SRC
 
-cat > "$PACKAGE_DIR/Tests/${NAME}Tests/${NAME}Tests.swift" <<TEST
+cat > "$PKG_DIR/Tests/${NAME}Tests/${NAME}Tests.swift" <<TEST
+@testable import $NAME
 import ComposableArchitecture
 import XCTest
 
-@testable import $NAME
-
 final class ${NAME}Tests: XCTestCase {
-  func testPlaceholder() async {
+  func testInitialState() async {
     let store = TestStore(initialState: $NAME.State()) {
       $NAME()
     }
+
     XCTAssertNotNil(store.state)
   }
 }
 TEST
 
-cat > "$PACKAGE_DIR/DemoApps/${NAME}Demo/${NAME}DemoApp.swift" <<DEMO
-import ComposableArchitecture
+cat > "$PKG_DIR/DemoApps/${NAME}Demo/${NAME}DemoApp.swift" <<DEMO
 import $NAME
 import SwiftUI
 
@@ -128,15 +102,38 @@ struct ${NAME}DemoApp: App {
 }
 DEMO
 
-cat > "$PACKAGE_DIR/DemoApps/${NAME}Demo/README.md" <<README
+cat > "$PKG_DIR/DemoApps/${NAME}Demo/README.md" <<README
 # $NAME Demo App
 
-This is a standalone demo app entry point for the `$NAME` package.
+This is a standalone demo app entry point for the `$NAME` target.
 
 ## Usage
 1. Create a new iOS App target in Xcode (or a small demo Xcode project).
-2. Add the `$NAME` package as a dependency.
+2. Add the `RecordsKit` package as a dependency.
 3. Use `${NAME}DemoApp.swift` as the app entry point.
 README
 
-echo "Created $NAME at $PACKAGE_DIR"
+python3 - <<PY
+import re
+from pathlib import Path
+
+pkg = Path("$PKG_FILE")
+text = pkg.read_text()
+
+product_entry = f"    .library(name: \"{NAME}\", targets: [\"{NAME}\"])"
+if product_entry not in text:
+  text = re.sub(
+    r"products: \[\n",
+    "products: [\n" + product_entry + ",\n",
+    text,
+    count=1,
+  )
+
+if f"name: \"{NAME}\"" not in text:
+  target_block = f"    .target(\n      name: \"{NAME}\",\n      dependencies: [\n        .product(name: \"ComposableArchitecture\", package: \"swift-composable-architecture\"),\n        .product(name: \"Dependencies\", package: \"swift-dependencies\")\n      ]\n    ),\n    .testTarget(\n      name: \"{NAME}Tests\",\n      dependencies: [\"{NAME}\"]\n    ),\n"
+  text = re.sub(r"targets: \[\n", "targets: [\n" + target_block, text, count=1)
+
+pkg.write_text(text)
+PY
+
+echo "Created $NAME in RecordsKit"

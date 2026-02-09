@@ -3,10 +3,7 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 
-if ! command -v swiftformat >/dev/null 2>&1; then
-  echo "swiftformat not found. Install with: brew install swiftformat" >&2
-  exit 1
-fi
-
-cd "$ROOT_DIR"
-swiftformat .
+swift package \
+  --package-path "$ROOT_DIR/Packages/RecordsKit" \
+  plugin --allow-writing-to-package-directory swiftformat -- \
+  "$ROOT_DIR"

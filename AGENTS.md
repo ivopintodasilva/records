@@ -20,14 +20,15 @@ These are mandatory engineering guardrails for this repo.
 - The document must capture motivation and key decisions so future changes can be correlated with code history.
 
 ## Modularity
-- Each feature is its own Swift Package with `Sources`, `Tests`, and `DemoApp` targets.
+- All features live as targets inside the single `RecordsKit` Swift package.
+- Each feature has `Sources`, `Tests`, and a `DemoApp` folder.
 - Feature modules may depend on each other for now, but keep boundaries clean and APIs explicit.
 - Public API must be minimal and documented.
 - Naming conventions:
   - Feature modules must end with `Feature`.
   - Stateful services must end with `Service`.
   - Stateless clients must end with `Client`.
-- Use `/Users/ivo/Projects/records/scripts/new-feature.sh` to scaffold new feature modules.
+- Use `/Users/ivo/Projects/records/scripts/new-feature.sh` to scaffold new feature targets inside `RecordsKit`.
 
 ## Testing
 - Unit + integration tests for all logic-layer changes.
@@ -50,3 +51,4 @@ These are mandatory engineering guardrails for this repo.
 ## Git Hygiene
 - Never commit directly on `main`. Always create a `codex/*` branch first.
 - Always build and run relevant tests before committing or pushing.
+- Always pull the latest `main`, branch from it, and keep each new piece of work on its own branch.

@@ -1,7 +1,7 @@
 import ComposableArchitecture
 import SwiftUI
 
-public struct CollectionFeatureView: View {
+public struct CollectionView: View {
   private let store: StoreOf<CollectionFeature>
 
   public init(store: StoreOf<CollectionFeature>) {

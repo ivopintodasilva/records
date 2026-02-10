@@ -7,6 +7,7 @@ if [ $# -lt 1 ]; then
 fi
 
 NAME="$1"
+BASE_NAME="${NAME%Feature}"
 ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 PKG_DIR="$ROOT_DIR/Packages/RecordsKit"
 PKG_FILE="$PKG_DIR/Package.swift"
@@ -55,11 +56,11 @@ public struct $NAME {
 }
 SRC
 
-cat > "$PKG_DIR/Sources/$NAME/${NAME}View.swift" <<SRC
+cat > "$PKG_DIR/Sources/$NAME/${BASE_NAME}View.swift" <<SRC
 import ComposableArchitecture
 import SwiftUI
 
-public struct ${NAME}View: View {
+public struct ${BASE_NAME}View: View {
   private let store: StoreOf<$NAME>
 
   public init(store: StoreOf<$NAME>) {
@@ -96,7 +97,7 @@ import SwiftUI
 struct ${NAME}DemoApp: App {
   var body: some Scene {
     WindowGroup {
-      ${NAME}View(
+      ${BASE_NAME}View(
         store: Store(initialState: $NAME.State()) {
           $NAME()
         }

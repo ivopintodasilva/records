@@ -2,7 +2,7 @@ import CollectionFeature
 import ComposableArchitecture
 import SwiftUI
 
-public struct AppFeatureView: View {
+public struct AppView: View {
   private let store: StoreOf<AppFeature>
 
   public init(store: StoreOf<AppFeature>) {
@@ -10,7 +10,7 @@ public struct AppFeatureView: View {
   }
 
   public var body: some View {
-    CollectionFeatureView(
+    CollectionView(
       store: store.scope(state: \.collection, action: \.collection)
     )
   }
@@ -30,6 +30,6 @@ public struct AppFeatureRootView: View {
   }
 
   public var body: some View {
-    AppFeatureView(store: store)
+    AppView(store: store)
   }
 }

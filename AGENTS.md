@@ -25,6 +25,7 @@ These are mandatory engineering guardrails for this repo.
 - Split stores and views into separate files:
   - `*Feature.swift` holds reducer/state/action logic.
   - `*View.swift` holds SwiftUI views.
+- View types omit the `Feature` suffix (example: `CollectionView` for `CollectionFeature`).
 - Feature modules may depend on each other for now, but keep boundaries clean and APIs explicit.
 - Public API must be minimal and documented.
 - Naming conventions:

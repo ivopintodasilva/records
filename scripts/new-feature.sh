@@ -34,7 +34,6 @@ mkdir -p \
 cat > "$PKG_DIR/Sources/$NAME/${NAME}.swift" <<SRC
 import ComposableArchitecture
 import Dependencies
-import SwiftUI
 
 @Reducer
 public struct $NAME {
@@ -54,6 +53,11 @@ public struct $NAME {
     }
   }
 }
+SRC
+
+cat > "$PKG_DIR/Sources/$NAME/${NAME}View.swift" <<SRC
+import ComposableArchitecture
+import SwiftUI
 
 public struct ${NAME}View: View {
   private let store: StoreOf<$NAME>

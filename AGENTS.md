@@ -22,6 +22,9 @@ These are mandatory engineering guardrails for this repo.
 ## Modularity
 - All features live as targets inside the single `RecordsKit` Swift package.
 - Each feature has `Sources`, `Tests`, and a `DemoApp` folder.
+- Split stores and views into separate files:
+  - `*Feature.swift` holds reducer/state/action logic.
+  - `*View.swift` holds SwiftUI views.
 - Feature modules may depend on each other for now, but keep boundaries clean and APIs explicit.
 - Public API must be minimal and documented.
 - Naming conventions:

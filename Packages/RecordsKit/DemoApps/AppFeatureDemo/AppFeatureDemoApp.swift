@@ -5,7 +5,7 @@ import SwiftUI
 struct AppFeatureDemoApp: App {
   var body: some Scene {
     WindowGroup {
-      AppFeatureRootView()
+      AppView()
     }
   }
 }

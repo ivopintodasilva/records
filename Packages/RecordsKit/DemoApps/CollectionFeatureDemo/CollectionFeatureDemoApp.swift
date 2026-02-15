@@ -6,7 +6,7 @@ import SwiftUI
 struct CollectionFeatureDemoApp: App {
   var body: some Scene {
     WindowGroup {
-      CollectionFeatureView(
+      CollectionView(
         store: Store(initialState: CollectionFeature.State()) {
           CollectionFeature()
         }

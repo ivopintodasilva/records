@@ -1,4 +1,5 @@
 import ComposableArchitecture
+import Localization
 import SwiftUI
 
 public struct CollectionView: View {
@@ -9,39 +10,40 @@ public struct CollectionView: View {
   }
 
   public var body: some View {
-    WithViewStore(store, observe: { $0 }, content: { viewStore in
-      VStack(alignment: .leading, spacing: 12) {
-        Text("My Collection")
-          .font(.title)
-
-        HStack {
-          TextField(
-            "Record title",
-            text: viewStore.binding(
-              get: \.newRecordTitle,
-              send: CollectionFeature.Action.newRecordTitleChanged
+    NavigationStack {
+      WithViewStore(store, observe: { $0 }, content: { viewStore in
+        VStack(alignment: .leading, spacing: 12) {
+          HStack {
+            TextField(
+              "Record title",
+              text: viewStore.binding(
+                get: \.newRecordTitle,
+                send: CollectionFeature.Action.newRecordTitleChanged
+              )
             )
-          )
-          .textFieldStyle(.roundedBorder)
+            .textFieldStyle(.roundedBorder)
 
-          Button("Add") {
-            viewStore.send(.addButtonTapped)
+            Button("Add") {
+              viewStore.send(.addButtonTapped)
+            }
+            .buttonStyle(.borderedProminent)
           }
-          .buttonStyle(.borderedProminent)
-        }
 
-        if viewStore.records.isEmpty {
-          Text("No records yet")
-            .foregroundStyle(.secondary)
-        } else {
-          List {
-            ForEach(viewStore.records) { record in
-              Text(record.title)
+          if viewStore.records.isEmpty {
+            Text("No records yet")
+              .foregroundStyle(.secondary)
+          } else {
+            List {
+              ForEach(viewStore.records) { record in
+                Text(record.title)
+              }
             }
           }
         }
-      }
-      .padding()
-    })
+        .padding()
+        .navigationTitle(L10n.Collection.Navigation.title)
+        .navigationBarTitleDisplayMode(.large)
+      })
+    }
   }
 }

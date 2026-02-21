@@ -22,6 +22,7 @@ excluded:
   - .build
   - Carthage
   - Pods
+  - Packages/RecordsKit/Sources/Localization/Generated
 
 line_length:
   warning: 120

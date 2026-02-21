@@ -1,0 +1,9 @@
+strings:
+  inputs:
+    - Packages/RecordsKit/Sources/Localization/Resources/en.lproj/Localizable.strings
+  outputs:
+    - templateName: structured-swift5
+      output: Packages/RecordsKit/Sources/Localization/Generated/L10n.generated.swift
+      params:
+        enumName: L10n
+        publicAccess: true

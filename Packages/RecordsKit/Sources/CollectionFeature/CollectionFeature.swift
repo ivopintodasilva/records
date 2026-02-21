@@ -1,5 +1,4 @@
 import ComposableArchitecture
-import Dependencies
 import Foundation
 
 @Reducer
@@ -8,43 +7,67 @@ public struct CollectionFeature {
 
   @ObservableState
   public struct State: Equatable {
-    public var records: IdentifiedArrayOf<Record> = []
-    public var newRecordTitle: String = ""
+    public var records: IdentifiedArrayOf<Record>
 
-    public init() {}
+    public init() {
+      records = Self.sampleRecords
+    }
+
+    public init(records: IdentifiedArrayOf<Record>) {
+      self.records = records
+    }
+
+    public static let sampleRecords: IdentifiedArrayOf<Record> = [
+      Record(
+        id: UUID(),
+        title: "Kind of Blue",
+        artist: "Miles Davis",
+        coverSystemImageName: "music.note.house"
+      ),
+      Record(
+        id: UUID(),
+        title: "Blue Train",
+        artist: "John Coltrane",
+        coverSystemImageName: "opticaldisc"
+      ),
+      Record(
+        id: UUID(),
+        title: "Abbey Road",
+        artist: "The Beatles",
+        coverSystemImageName: "music.quarternote.3"
+      ),
+      Record(
+        id: UUID(),
+        title: "Rumours",
+        artist: "Fleetwood Mac",
+        coverSystemImageName: "guitars"
+      ),
+      Record(
+        id: UUID(),
+        title: "Discovery",
+        artist: "Daft Punk",
+        coverSystemImageName: "headphones"
+      ),
+    ]
   }
 
   public struct Record: Equatable, Identifiable {
     public let id: UUID
     public var title: String
+    public var artist: String
+    public var coverSystemImageName: String
 
-    public init(id: UUID, title: String) {
+    public init(id: UUID, title: String, artist: String, coverSystemImageName: String) {
       self.id = id
       self.title = title
+      self.artist = artist
+      self.coverSystemImageName = coverSystemImageName
     }
   }
 
-  public enum Action {
-    case addButtonTapped
-    case newRecordTitleChanged(String)
-  }
-
-  @Dependency(\.uuid) private var uuid
+  public enum Action {}
 
   public var body: some Reducer<State, Action> {
-    Reduce { state, action in
-      switch action {
-      case .addButtonTapped:
-        let trimmed = state.newRecordTitle.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty else { return .none }
-        state.records.append(Record(id: uuid(), title: trimmed))
-        state.newRecordTitle = ""
-        return .none
-
-      case let .newRecordTitleChanged(value):
-        state.newRecordTitle = value
-        return .none
-      }
-    }
+    EmptyReducer()
   }
 }

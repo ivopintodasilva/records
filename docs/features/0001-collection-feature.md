@@ -1,7 +1,7 @@
 # Feature: CollectionFeature
 
 ## Summary
-- A minimal collection list feature with add capability and a basic list UI.
+- A minimal collection browsing feature with a grid UI showing album cover, title, and artist.
 
 ## Motivation
 - Establish the first feature and testing patterns.
@@ -9,16 +9,17 @@
 
 ## Scope
 - In scope
-  - Add records by title
-  - List existing records
+  - Display records in a grid
+  - Show album cover, title, and artist
 - Out of scope
+  - Adding/editing/deleting records
   - Persistent storage
   - Barcode scanning
   - Sharing
 
 ## Decisions
 - The feature is a target inside the `RecordsKit` package with `Sources`, `Tests`, and `DemoApps`.
-- Dependencies are injected using `swift-dependencies`.
+- The first iteration uses seeded in-memory records so UI structure can be developed before data flows are finalized.
 - UI is included in the feature target for now.
 
 ## Risks & Mitigations
@@ -26,7 +27,7 @@
 - Mitigation: Provide a demo app entry file and instructions for wiring.
 
 ## Testing
-- Unit/integration tests cover add behavior and empty input handling.
+- Unit tests cover the display model's initial seeded state.
 - UI tests are deferred.
 
 ## Follow-ups

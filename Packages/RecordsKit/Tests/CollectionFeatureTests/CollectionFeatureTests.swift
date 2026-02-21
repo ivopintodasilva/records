@@ -20,4 +20,44 @@ final class CollectionFeatureTests: XCTestCase {
 
     await store.send(.addRecordButtonTapped)
   }
+
+  @MainActor
+  func testSearchQueryChanged() async {
+    let store = TestStore(initialState: CollectionFeature.State()) {
+      CollectionFeature()
+    }
+
+    await store.send(.searchQueryChanged("Miles")) {
+      $0.searchQuery = "Miles"
+    }
+  }
+
+  @MainActor
+  func testSearchFocusChanged() async {
+    let store = TestStore(initialState: CollectionFeature.State()) {
+      CollectionFeature()
+    }
+
+    await store.send(.searchFocusChanged(true)) {
+      $0.isSearchFocused = true
+    }
+  }
+
+  @MainActor
+  func testAddButtonClearsSearchWhenFocused() async {
+    let store = TestStore(
+      initialState: CollectionFeature.State(
+        records: CollectionFeature.State.sampleRecords,
+        searchQuery: "abc",
+        isSearchFocused: true
+      )
+    ) {
+      CollectionFeature()
+    }
+
+    await store.send(.addRecordButtonTapped) {
+      $0.searchQuery = ""
+      $0.isSearchFocused = false
+    }
+  }
 }

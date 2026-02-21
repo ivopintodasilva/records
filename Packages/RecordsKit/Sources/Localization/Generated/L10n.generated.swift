@@ -14,10 +14,16 @@ public enum L10n {
     public enum Actions {
       /// Add record
       public static let addRecord = L10n.tr("Localizable", "collection.actions.addRecord", fallback: "Add record")
+      /// Close search
+      public static let closeSearch = L10n.tr("Localizable", "collection.actions.closeSearch", fallback: "Close search")
     }
     public enum Navigation {
       /// Collection
       public static let title = L10n.tr("Localizable", "collection.navigation.title", fallback: "Collection")
+    }
+    public enum Search {
+      /// Search
+      public static let placeholder = L10n.tr("Localizable", "collection.search.placeholder", fallback: "Search")
     }
   }
 }

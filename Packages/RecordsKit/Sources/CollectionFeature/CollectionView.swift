@@ -4,6 +4,7 @@ import SwiftUI
 
 public struct CollectionView: View {
   private let store: StoreOf<CollectionFeature>
+  @FocusState private var isSearchFieldFocused: Bool
 
   public init(store: StoreOf<CollectionFeature>) {
     self.store = store
@@ -12,32 +13,55 @@ public struct CollectionView: View {
   public var body: some View {
     NavigationView {
       WithViewStore(store, observe: { $0 }, content: { viewStore in
-        ZStack(alignment: .bottomLeading) {
-          ScrollView {
-            VStack(spacing: 12) {
-              ForEach(Array(recordRows(from: Array(viewStore.records)).enumerated()), id: \.offset) { _, row in
-                HStack(alignment: .top, spacing: 12) {
-                  ForEach(row) { record in
-                    recordCard(record)
-                      .frame(maxWidth: .infinity, alignment: .leading)
-                  }
+        ScrollView {
+          VStack(spacing: 12) {
+            ForEach(Array(recordRows(from: Array(viewStore.records)).enumerated()), id: \.offset) { _, row in
+              HStack(alignment: .top, spacing: 12) {
+                ForEach(row) { record in
+                  recordCard(record)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
 
-                  if row.count == 1 {
-                    Spacer()
-                      .frame(maxWidth: .infinity)
-                  }
+                if row.count == 1 {
+                  Spacer()
+                    .frame(maxWidth: .infinity)
                 }
               }
             }
-            .padding()
           }
-          addRecordButton {
-            viewStore.send(.addRecordButtonTapped)
-          }
-          .padding(16)
+          .padding()
         }
-        .collectionNavigationTitle()
+        .safeAreaInset(edge: .bottom, spacing: 0) {
+          HStack(spacing: 0) {
+            bottomControls(viewStore: viewStore)
+          }
+          .padding(.leading, 16)
+          .padding(.trailing, 16)
+          .padding(.bottom, 12)
+        }
+        .navigationTitle(L10n.Collection.Navigation.title)
+        .navigationBarTitleDisplayMode(.large)
+        .onChange(of: isSearchFieldFocused) { isFocused in
+          viewStore.send(.searchFocusChanged(isFocused), animation: .easeInOut(duration: 0.2))
+        }
+        .onChange(of: viewStore.isSearchFocused) { isFocused in
+          if isSearchFieldFocused != isFocused {
+            withAnimation(.easeInOut(duration: 0.2)) {
+              isSearchFieldFocused = isFocused
+            }
+          }
+        }
       })
+    }
+  }
+
+  private func bottomControls(viewStore: ViewStoreOf<CollectionFeature>) -> some View {
+    HStack(spacing: 10) {
+      addRecordButton(isSearchFocused: viewStore.isSearchFocused) {
+        viewStore.send(.addRecordButtonTapped, animation: .easeInOut(duration: 0.2))
+      }
+
+      searchBar(viewStore: viewStore)
     }
   }
 
@@ -74,110 +98,55 @@ public struct CollectionView: View {
     .clipShape(RoundedRectangle(cornerRadius: 12))
   }
 
-  private func addRecordButton(action: @escaping () -> Void) -> some View {
+  private func addRecordButton(isSearchFocused: Bool, action: @escaping () -> Void) -> some View {
     Button(action: action) {
-      addRecordIcon()
-        .padding(4)
+      bottomControlButtonGlyph(isSearchFocused: isSearchFocused)
+        .padding(6)
     }
     .frame(width: 56, height: 56)
     .collectionAddRecordButtonStyle()
-    .collectionAddRecordAccessibilityLabel()
+    .collectionAddRecordAccessibilityLabel(isSearchFocused: isSearchFocused)
   }
 
-  @ViewBuilder
-  private func addRecordIcon() -> some View {
-    #if os(macOS)
-      if #available(macOS 11.0, *) {
-        Image(systemName: "plus")
-          .font(.system(size: 18, weight: .semibold))
-          .foregroundColor(.primary)
-      } else {
-        Text("+")
-          .font(.system(size: 24, weight: .semibold))
-          .foregroundColor(.primary)
-      }
-    #else
-      Image(systemName: "plus")
-        .resizable()
-        .aspectRatio(contentMode: ContentMode.fit)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .foregroundColor(.primary)
-    #endif
+  private func bottomControlButtonGlyph(isSearchFocused: Bool) -> some View {
+    Image(systemName: "plus")
+      .resizable()
+      .aspectRatio(contentMode: .fit)
+      .frame(maxWidth: .infinity, maxHeight: .infinity)
+      .foregroundStyle(Color.black.opacity(0.9))
+      .rotationEffect(.degrees(isSearchFocused ? 45 : 0))
+      .animation(.easeInOut(duration: 0.2), value: isSearchFocused)
+  }
+
+  private func searchBar(viewStore: ViewStoreOf<CollectionFeature>) -> some View {
+    HStack(spacing: 8) {
+      Image(systemName: "magnifyingglass")
+        .foregroundColor(.secondary)
+      TextField(
+        L10n.Collection.Search.placeholder,
+        text: viewStore.binding(
+          get: \.searchQuery,
+          send: CollectionFeature.Action.searchQueryChanged
+        )
+      )
+        .textInputAutocapitalization(.never)
+        .disableAutocorrection(true)
+        .focused($isSearchFieldFocused)
+    }
+    .padding(.horizontal, 14)
+    .frame(height: 56)
+    .clipShape(Capsule())
+    .glassEffect(.clear, in: Capsule())
   }
 }
 
 private extension View {
-  @ViewBuilder
-  func collectionNavigationTitle() -> some View {
-    #if os(macOS)
-      if #available(macOS 11.0, *) {
-        navigationTitle(L10n.Collection.Navigation.title)
-      } else {
-        self
-      }
-    #else
-      navigationTitle(L10n.Collection.Navigation.title)
-        .navigationBarTitleDisplayMode(.large)
-    #endif
+  func collectionAddRecordAccessibilityLabel(isSearchFocused: Bool) -> some View {
+    accessibilityLabel(isSearchFocused ? L10n.Collection.Actions.closeSearch : L10n.Collection.Actions.addRecord)
   }
 
-  @ViewBuilder
-  func collectionAddRecordAccessibilityLabel() -> some View {
-    #if os(macOS)
-      if #available(macOS 11.0, *) {
-        accessibilityLabel(L10n.Collection.Actions.addRecord)
-      } else {
-        self
-      }
-    #else
-      accessibilityLabel(L10n.Collection.Actions.addRecord)
-    #endif
-  }
-
-  @ViewBuilder
   func collectionAddRecordButtonStyle() -> some View {
-    #if os(macOS)
-      if #available(macOS 26.0, *) {
-        buttonStyle(.glass)
-      } else {
-        buttonStyle(.plain)
-          .background(
-            Circle()
-              .fill(
-                LinearGradient(
-                  gradient: Gradient(colors: [Color.white.opacity(0.42), Color.white.opacity(0.2)]),
-                  startPoint: .topLeading,
-                  endPoint: .bottomTrailing
-                )
-              )
-          )
-          .overlay(
-            Circle()
-              .stroke(Color.white.opacity(0.5), lineWidth: 1)
-          )
-          .shadow(color: Color.black.opacity(0.24), radius: 14, x: 0, y: 6)
-      }
-    #else
-      if #available(iOS 26.0, *) {
-        buttonStyle(.glass(.clear))
-      } else {
-        buttonStyle(.plain)
-          .background(
-            Circle()
-              .fill(
-                LinearGradient(
-                  gradient: Gradient(colors: [Color.white.opacity(0.42), Color.white.opacity(0.2)]),
-                  startPoint: .topLeading,
-                  endPoint: .bottomTrailing
-                )
-              )
-          )
-          .overlay(
-            Circle()
-              .stroke(Color.white.opacity(0.5), lineWidth: 1)
-          )
-          .shadow(color: Color.black.opacity(0.24), radius: 14, x: 0, y: 6)
-      }
-    #endif
+    buttonStyle(.glass(.clear))
+      .clipShape(Circle())
   }
 }

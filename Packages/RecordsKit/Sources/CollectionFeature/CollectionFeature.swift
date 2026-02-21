@@ -10,7 +10,7 @@ public struct CollectionFeature {
     public var records: IdentifiedArrayOf<Record>
 
     public init() {
-      self.records = Self.sampleRecords
+      records = Self.sampleRecords
     }
 
     public init(records: IdentifiedArrayOf<Record>) {
@@ -47,7 +47,7 @@ public struct CollectionFeature {
         title: "Discovery",
         artist: "Daft Punk",
         coverSystemImageName: "headphones"
-      )
+      ),
     ]
   }
 

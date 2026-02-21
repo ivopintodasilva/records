@@ -37,7 +37,7 @@ public struct CollectionView: View {
 
   private func recordRows(from records: [CollectionFeature.Record]) -> [[CollectionFeature.Record]] {
     stride(from: 0, to: records.count, by: 2).map { index in
-      Array(records[index..<min(index + 2, records.count)])
+      Array(records[index ..< min(index + 2, records.count)])
     }
   }
 
@@ -74,13 +74,12 @@ private extension View {
   func collectionNavigationTitle() -> some View {
     #if os(macOS)
       if #available(macOS 11.0, *) {
-        self.navigationTitle(L10n.Collection.Navigation.title)
+        navigationTitle(L10n.Collection.Navigation.title)
       } else {
         self
       }
     #else
-      self
-        .navigationTitle(L10n.Collection.Navigation.title)
+      navigationTitle(L10n.Collection.Navigation.title)
         .navigationBarTitleDisplayMode(.large)
     #endif
   }

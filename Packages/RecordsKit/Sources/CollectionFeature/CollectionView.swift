@@ -129,9 +129,9 @@ public struct CollectionView: View {
           send: CollectionFeature.Action.searchQueryChanged
         )
       )
-        .textInputAutocapitalization(.never)
-        .disableAutocorrection(true)
-        .focused($isSearchFieldFocused)
+      .textInputAutocapitalization(.never)
+      .disableAutocorrection(true)
+      .focused($isSearchFieldFocused)
     }
     .padding(.horizontal, 14)
     .frame(height: 56)

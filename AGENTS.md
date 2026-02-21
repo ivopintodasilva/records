@@ -72,3 +72,11 @@ These are mandatory engineering guardrails for this repo.
 - Always build and run relevant tests before committing or pushing.
 - Always start a new feature on its own branch.
 - New branches should always originate from the latest `main` branch.
+- Required preflight before starting any code changes:
+  1. `git checkout main`
+  2. `git pull --ff-only origin main`
+  3. `git checkout -b codex/<feature-name>`
+- Do not reuse an existing local `codex/*` branch for new work.
+- Verification is mandatory immediately after branch creation:
+  - `git merge-base --is-ancestor main HEAD` must succeed.
+  - `git rev-parse main` and `git rev-parse HEAD~0` should match at branch start (before new commits).

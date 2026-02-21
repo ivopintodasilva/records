@@ -11,6 +11,10 @@ import Foundation
 // swiftlint:disable nesting type_body_length type_name vertical_whitespace_opening_braces
 public enum L10n {
   public enum Collection {
+    public enum Actions {
+      /// Add record
+      public static let addRecord = L10n.tr("Localizable", "collection.actions.addRecord", fallback: "Add record")
+    }
     public enum Navigation {
       /// Collection
       public static let title = L10n.tr("Localizable", "collection.navigation.title", fallback: "Collection")

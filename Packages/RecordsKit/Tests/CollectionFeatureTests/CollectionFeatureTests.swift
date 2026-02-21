@@ -1,4 +1,5 @@
 @testable import CollectionFeature
+import ComposableArchitecture
 import XCTest
 
 final class CollectionFeatureTests: XCTestCase {
@@ -9,5 +10,14 @@ final class CollectionFeatureTests: XCTestCase {
     XCTAssertEqual(state.records.count, 5)
     XCTAssertEqual(state.records.first?.title, "Kind of Blue")
     XCTAssertEqual(state.records.first?.artist, "Miles Davis")
+  }
+
+  @MainActor
+  func testAddRecordButtonTapIsHandled() async {
+    let store = TestStore(initialState: CollectionFeature.State()) {
+      CollectionFeature()
+    }
+
+    await store.send(.addRecordButtonTapped)
   }
 }

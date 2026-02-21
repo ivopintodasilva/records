@@ -65,9 +65,16 @@ public struct CollectionFeature {
     }
   }
 
-  public enum Action {}
+  public enum Action {
+    case addRecordButtonTapped
+  }
 
   public var body: some Reducer<State, Action> {
-    EmptyReducer()
+    Reduce { _, action in
+      switch action {
+      case .addRecordButtonTapped:
+        .none
+      }
+    }
   }
 }

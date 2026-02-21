@@ -1,31 +1,13 @@
 @testable import CollectionFeature
-import ComposableArchitecture
 import XCTest
 
 final class CollectionFeatureTests: XCTestCase {
-  func testAddRecord() async {
-    let store = TestStore(initialState: CollectionFeature.State()) {
-      CollectionFeature()
-    } withDependencies: {
-      $0.uuid = .incrementing
-    }
+  func testStateStartsWithDisplayRecords() {
+    let state = CollectionFeature.State()
 
-    await store.send(.newRecordTitleChanged("Kind of Blue")) {
-      $0.newRecordTitle = "Kind of Blue"
-    }
-
-    await store.send(.addButtonTapped) {
-      $0.newRecordTitle = ""
-      $0.records = [CollectionFeature.Record(id: UUID(0), title: "Kind of Blue")]
-    }
-  }
-
-  func testAddRecordIgnoresEmptyInput() async {
-    let store = TestStore(initialState: CollectionFeature.State()) {
-      CollectionFeature()
-    }
-
-    await store.send(.addButtonTapped)
-    XCTAssertTrue(store.state.records.isEmpty)
+    XCTAssertFalse(state.records.isEmpty)
+    XCTAssertEqual(state.records.count, 5)
+    XCTAssertEqual(state.records.first?.title, "Kind of Blue")
+    XCTAssertEqual(state.records.first?.artist, "Miles Davis")
   }
 }

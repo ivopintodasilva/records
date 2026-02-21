@@ -6,3 +6,4 @@
 --octalgrouping 4,8
 --hexgrouping 4,8
 --selfrequired true
+--exclude Packages/RecordsKit/Sources/Localization/Generated

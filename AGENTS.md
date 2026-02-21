@@ -3,20 +3,17 @@
 These are mandatory engineering guardrails for this repo.
 
 ## Global Rules
-- No test, no merge. All new behavior must be covered by tests.
-- TDD is the default workflow for new features.
-- All new features must be testable and include tests in the same change.
+- All new features must be testable in the same change.
 - CI must be green before merging (tests, lint, format, coverage).
-- Definition of Done must be satisfied for every PR (see PR template).
 - Changes that impact architecture require an ADR.
 
 ## Architecture Decision Records (ADR)
 - Required when making an architectural change (module boundaries, data storage strategy, persistence model, dependency rules, significant build system changes).
-- Store ADRs in `docs/adr/` using the template.
+- Store ADRs in `docs/adr/` using the template in docs/adr/0000-template.md.
 - One ADR per decision; short and explicit.
 
 ## Feature Descriptions
-- Every new feature or task must include a description document in `docs/features/` using the template.
+- Every new feature or task must include a description document in `docs/features/` using the template in docs/features/0000-template.md.
 - The document must capture motivation and key decisions so future changes can be correlated with code history.
 
 ## Modularity
@@ -38,24 +35,37 @@ These are mandatory engineering guardrails for this repo.
 - Use `/Users/ivo/Projects/records/scripts/new-feature.sh` to scaffold new feature targets inside `RecordsKit`.
 
 ## Testing
-- Unit + integration tests for all logic-layer changes.
-- Coverage is enforced per module (initial threshold: 80%).
-- Prefer TCA TestStore patterns as documented by TCA.
+- Prepare a list of relevant tests for all new features and confirm test plan before implementing them.
+- Use testing patterns as documented in: https://swiftpackageindex.com/pointfreeco/swift-composable-architecture/main/documentation/composablearchitecture/testingtca.
 - Never commit or push code that has not been built and tested (at least the affected targets).
 
 ## Dependencies
 - All dependencies must be injected using TCA's `swift-dependencies` library.
 
 ## Tooling
-- SwiftLint and SwiftFormat must run via SwiftPM plugins from `RecordsKit` (no local installs).
 - CI runs on macOS only.
-- Git hooks: `pre-commit` runs SwiftFormat and SwiftLint.
+- Git hooks: `pre-commit` runs SwiftGen, SwiftFormat, and SwiftLint.
+- During normal implementation, do not run SwiftFormat/SwiftLint after every small edit; rely on `pre-commit` as the default style/lint gate.
+- Build and run relevant tests before pushing, even when relying on pre-commit for format/lint.
+
+## Localization
+- All user-facing strings must be localized. Do not hardcode UI text in feature/source files.
+- SwiftGen is used to generate type-safe string accessors from localization resources.
+- Localization resources live in `/Users/ivo/Projects/records/Packages/RecordsKit/Sources/Localization/Resources/`.
+- Generated accessors live in `/Users/ivo/Projects/records/Packages/RecordsKit/Sources/Localization/Generated/L10n.generated.swift`.
+- Use generated `L10n` symbols in code (for example `L10n.Collection.Navigation.title`) instead of raw string keys.
+- When adding or changing strings:
+  1. Update all relevant `.strings` resource file.
+  2. Run `/Users/ivo/Projects/records/scripts/swiftgen.sh`.
+  3. Ensure generated changes are included in the commit.
+  4. Let `pre-commit` run formatting/linting before commit.
 
 ## PR Format
-- PR descriptions must be valid Markdown with real newlines, not escaped `\\n` characters.
+- PR descriptions must be valid Markdown.
 - Use sections: `Summary` and `Testing`.
 
 ## Git Hygiene
 - Never commit directly on `main`. Always create a `codex/*` branch first.
 - Always build and run relevant tests before committing or pushing.
-- Always pull the latest `main`, branch from it, and keep each new piece of work on its own branch.
+- Always start a new feature on its own branch.
+- New branches should always originate from the latest `main` branch.

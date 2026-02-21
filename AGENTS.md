@@ -48,6 +48,9 @@ These are mandatory engineering guardrails for this repo.
 - During normal implementation, do not run SwiftFormat/SwiftLint after every small edit; rely on `pre-commit` as the default style/lint gate.
 - Build and run relevant tests before pushing, even when relying on pre-commit for format/lint.
 
+## Swift
+- Always avoid force-unwrapping optional types.
+
 ## Localization
 - All user-facing strings must be localized. Do not hardcode UI text in feature/source files.
 - SwiftGen is used to generate type-safe string accessors from localization resources.

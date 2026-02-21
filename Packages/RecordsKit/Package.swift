@@ -1,11 +1,11 @@
-// swift-tools-version: 5.9
+// swift-tools-version: 6.1
 
 import PackageDescription
 
 let package = Package(
   name: "RecordsKit",
   defaultLocalization: "en",
-  platforms: [.iOS(.v16), .macOS(.v10_15)],
+  platforms: [.iOS("26.0"), .macOS(.v10_15)],
   products: [
     .library(name: "AppFeature", targets: ["AppFeature"]),
     .library(name: "CollectionFeature", targets: ["CollectionFeature"]),

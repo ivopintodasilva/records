@@ -22,6 +22,8 @@ These are mandatory engineering guardrails for this repo.
 - Split stores and views into separate files:
   - `*Feature.swift` holds reducer/state/action logic.
   - `*View.swift` holds SwiftUI views.
+- Do not implement business logic in `*View.swift`.
+- Reducers/stores are the single place for feature logic and state transitions; views should render state and forward user events only.
 - View types drop the `Feature` suffix. Examples:
   - `AppFeature` -> `AppView`
   - `CollectionFeature` -> `CollectionView`

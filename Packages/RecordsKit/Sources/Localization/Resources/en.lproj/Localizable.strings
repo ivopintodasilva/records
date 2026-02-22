@@ -1,1 +1,4 @@
 "collection.navigation.title" = "Collection";
+"collection.actions.addRecord" = "Add record";
+"collection.actions.closeSearch" = "Close search";
+"collection.search.placeholder" = "Search";

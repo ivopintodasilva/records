@@ -7,6 +7,7 @@ let package = Package(
   defaultLocalization: "en",
   platforms: [.iOS("26.0"), .macOS(.v10_15)],
   products: [
+    .library(name: "AddRecordFeature", targets: ["AddRecordFeature"]),
     .library(name: "AppFeature", targets: ["AppFeature"]),
     .library(name: "CollectionFeature", targets: ["CollectionFeature"]),
     .library(name: "Localization", targets: ["Localization"]),
@@ -19,6 +20,13 @@ let package = Package(
     .package(url: "https://github.com/SwiftGen/SwiftGenPlugin", from: "6.6.2"),
   ],
   targets: [
+    .target(
+      name: "AddRecordFeature",
+      dependencies: [
+        .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+        .product(name: "Dependencies", package: "swift-dependencies"),
+      ]
+    ),
     .target(
       name: "Localization",
       resources: [
@@ -39,6 +47,10 @@ let package = Package(
         "CollectionFeature",
         .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
       ]
+    ),
+    .testTarget(
+      name: "AddRecordFeatureTests",
+      dependencies: ["AddRecordFeature"]
     ),
     .testTarget(
       name: "CollectionFeatureTests",

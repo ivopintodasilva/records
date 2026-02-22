@@ -113,7 +113,7 @@ public struct CollectionView: View {
       .resizable()
       .aspectRatio(contentMode: .fit)
       .frame(maxWidth: .infinity, maxHeight: .infinity)
-      .foregroundStyle(Color.black.opacity(0.9))
+      .foregroundColor(.secondary)
       .rotationEffect(.degrees(isSearchFocused ? 45 : 0))
       .animation(.easeInOut(duration: 0.2), value: isSearchFocused)
   }

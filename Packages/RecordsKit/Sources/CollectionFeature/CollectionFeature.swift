@@ -1,3 +1,4 @@
+import AddRecordFeature
 import ComposableArchitecture
 import Foundation
 
@@ -7,19 +8,23 @@ public struct CollectionFeature {
 
   @ObservableState
   public struct State: Equatable {
+    @Presents public var addRecord: AddRecordFeature.State?
     public var records: IdentifiedArrayOf<Record>
     public var searchQuery = ""
     public var isSearchFocused = false
 
     public init() {
+      addRecord = nil
       records = Self.sampleRecords
     }
 
     public init(
+      addRecord: AddRecordFeature.State? = nil,
       records: IdentifiedArrayOf<Record>,
       searchQuery: String = "",
       isSearchFocused: Bool = false
     ) {
+      self.addRecord = addRecord
       self.records = records
       self.searchQuery = searchQuery
       self.isSearchFocused = isSearchFocused
@@ -77,6 +82,7 @@ public struct CollectionFeature {
 
   public enum Action {
     case addRecordButtonTapped
+    case addRecord(PresentationAction<AddRecordFeature.Action>)
     case searchFocusChanged(Bool)
     case searchQueryChanged(String)
   }
@@ -88,7 +94,24 @@ public struct CollectionFeature {
         if state.isSearchFocused {
           state.searchQuery = ""
           state.isSearchFocused = false
+        } else {
+          state.addRecord = .init()
         }
+        return .none
+
+      case let .addRecord(.presented(.delegate(.didResolveRecord(record)))):
+        state.records.append(
+          Record(
+            id: UUID(),
+            title: record.title,
+            artist: record.artist,
+            coverSystemImageName: "opticaldisc"
+          )
+        )
+        state.addRecord = nil
+        return .none
+
+      case .addRecord:
         return .none
 
       case let .searchFocusChanged(isFocused):
@@ -99,6 +122,9 @@ public struct CollectionFeature {
         state.searchQuery = query
         return .none
       }
+    }
+    .ifLet(\.$addRecord, action: \.addRecord) {
+      AddRecordFeature()
     }
   }
 }

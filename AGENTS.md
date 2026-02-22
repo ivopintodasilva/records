@@ -44,6 +44,12 @@ These are mandatory engineering guardrails for this repo.
 ## Dependencies
 - All dependencies must be injected using TCA's `swift-dependencies` library.
 
+## Navigation
+- Use `swift-navigation` patterns through TCA for feature presentation/navigation.
+- Model destinations in reducer state with `@Presents` and route actions with `PresentationAction`.
+- Compose child reducers with `.ifLet(\.$destination, action: \.destination)`.
+- Do not drive navigation from ad-hoc view-local booleans; navigation state must live in the store.
+
 ## Tooling
 - CI runs on macOS only.
 - Git hooks: `pre-commit` runs SwiftGen, SwiftFormat, and SwiftLint.

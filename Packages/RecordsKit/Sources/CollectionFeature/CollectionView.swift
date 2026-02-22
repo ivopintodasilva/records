@@ -1,3 +1,4 @@
+import AddRecordFeature
 import ComposableArchitecture
 import Localization
 import SwiftUI
@@ -50,6 +51,10 @@ public struct CollectionView: View {
               isSearchFieldFocused = isFocused
             }
           }
+        }
+        .sheet(store: store.scope(state: \.$addRecord, action: \.addRecord)) { addRecordStore in
+          AddRecordView(store: addRecordStore)
+            .presentationDetents([.medium])
         }
       })
     }

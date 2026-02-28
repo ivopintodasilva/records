@@ -5,7 +5,7 @@ import PackageDescription
 let package = Package(
   name: "RecordsKit",
   defaultLocalization: "en",
-  platforms: [.iOS("26.0"), .macOS(.v10_15)],
+  platforms: [.iOS("26.0"), .macOS(.v13)],
   products: [
     .library(name: "AddRecordFeature", targets: ["AddRecordFeature"]),
     .library(name: "AppFeature", targets: ["AppFeature"]),

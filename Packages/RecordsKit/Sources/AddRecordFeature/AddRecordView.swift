@@ -9,6 +9,6 @@ public struct AddRecordView: View {
   }
 
   public var body: some View {
-    WithViewStore(store, observe: { _ in () }, content: { _ in Color.clear })
+    Color.clear
   }
 }

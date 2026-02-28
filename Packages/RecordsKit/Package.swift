@@ -36,6 +36,7 @@ let package = Package(
     .target(
       name: "CollectionFeature",
       dependencies: [
+        "AddRecordFeature",
         "Localization",
         .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
         .product(name: "Dependencies", package: "swift-dependencies"),

@@ -34,7 +34,7 @@ public struct AddRecordView: View {
 
   @ViewBuilder
   private var scanningPhaseView: some View {
-    if #available(iOS 16.0, *), DataScannerViewController.isSupported {
+    if DataScannerViewController.isSupported {
       ZStack(alignment: .bottom) {
         BarcodeScannerRepresentable(
           onBarcodeScanned: { barcode in

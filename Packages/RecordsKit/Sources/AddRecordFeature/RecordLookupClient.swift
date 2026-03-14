@@ -64,7 +64,8 @@ struct RecordLookupService {
     let payload = try JSONDecoder().decode(MusicBrainzSearchResponse.self, from: data)
     guard let release = payload.releases.first,
           let artist = release.artistCredit.displayName,
-          !artist.isEmpty else {
+          !artist.isEmpty
+    else {
       return nil
     }
 
@@ -87,7 +88,7 @@ struct RecordLookupService {
       }
 
       switch httpResponse.statusCode {
-      case 200..<400:
+      case 200 ..< 400:
         return url
       default:
         return nil
@@ -144,7 +145,7 @@ private struct MusicBrainzArtist: Decodable {
   let name: String
 }
 
-private extension Array where Element == MusicBrainzArtistCredit {
+private extension [MusicBrainzArtistCredit] {
   var displayName: String? {
     guard !isEmpty else { return nil }
     let combined = map(\.displayNamePart).joined()

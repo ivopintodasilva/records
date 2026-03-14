@@ -44,20 +44,20 @@ public struct CollectionView: View {
         #if os(iOS)
           .navigationBarTitleDisplayMode(.large)
         #endif
-        .onChange(of: isSearchFieldFocused) { isFocused in
-          viewStore.send(.searchFocusChanged(isFocused), animation: .easeInOut(duration: 0.2))
-        }
-        .onChange(of: viewStore.isSearchFocused) { isFocused in
-          if isSearchFieldFocused != isFocused {
-            withAnimation(.easeInOut(duration: 0.2)) {
-              isSearchFieldFocused = isFocused
+          .onChange(of: isSearchFieldFocused) { isFocused in
+            viewStore.send(.searchFocusChanged(isFocused), animation: .easeInOut(duration: 0.2))
+          }
+          .onChange(of: viewStore.isSearchFocused) { isFocused in
+            if isSearchFieldFocused != isFocused {
+              withAnimation(.easeInOut(duration: 0.2)) {
+                isSearchFieldFocused = isFocused
+              }
             }
           }
-        }
-        .sheet(store: store.scope(state: \.$addRecord, action: \.addRecord)) { addRecordStore in
-          AddRecordView(store: addRecordStore)
-            .presentationDetents([.medium])
-        }
+          .sheet(store: store.scope(state: \.$addRecord, action: \.addRecord)) { addRecordStore in
+            AddRecordView(store: addRecordStore)
+              .presentationDetents([.medium])
+          }
       })
     }
   }
@@ -137,7 +137,7 @@ public struct CollectionView: View {
         )
       )
       #if os(iOS)
-        .textInputAutocapitalization(.never)
+      .textInputAutocapitalization(.never)
       #endif
       .disableAutocorrection(true)
       .focused($isSearchFieldFocused)

@@ -4,7 +4,6 @@ These are mandatory engineering guardrails for this repo.
 
 ## Global Rules
 - All new features must be testable in the same change.
-- CI must be green before merging (tests, lint, format, coverage).
 - Changes that impact architecture require an ADR.
 
 ## Architecture Decision Records (ADR)
@@ -18,6 +17,7 @@ These are mandatory engineering guardrails for this repo.
 
 ## Modularity
 - All features live as targets inside the single `RecordsKit` Swift package.
+- All modules require an `AGENTS.md` (with a `CLAUDE.md` symlink to it) describing feature specific context (responsibilities, implementation details and limitations).
 - Each feature has `Sources`, `Tests`, and a `DemoApp` folder.
 - Split stores and views into separate files:
   - `*Feature.swift` holds reducer/state/action logic.

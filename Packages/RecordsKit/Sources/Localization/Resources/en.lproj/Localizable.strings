@@ -2,3 +2,14 @@
 "collection.actions.addRecord" = "Add record";
 "collection.actions.closeSearch" = "Close search";
 "collection.search.placeholder" = "Search";
+
+"addRecord.scanner.instruction" = "Point your camera at a barcode";
+"addRecord.lookup.loading" = "Looking up record…";
+"addRecord.actions.cancel" = "Cancel";
+"addRecord.actions.retry" = "Try Again";
+"addRecord.failed.unsupported.title" = "Scanner Unavailable";
+"addRecord.failed.unsupported.message" = "Barcode scanning is not supported on this device.";
+"addRecord.failed.scan.title" = "Scan Failed";
+"addRecord.failed.scan.message" = "Could not read the barcode. Please try again.";
+"addRecord.failed.lookup.title" = "Not Found";
+"addRecord.failed.lookup.message" = "Could not find a record for this barcode. Try again or scan a different barcode.";

@@ -30,8 +30,8 @@
   - `.delegate(.didResolveRecord(Record))`
 - `CollectionFeature` remains source of truth for current in-memory record list.
 - External lookup order:
-  1. Discogs (primary)
-  2. MusicBrainz (fallback)
+  1. MusicBrainz (current)
+  2. Discogs (planned)
   3. Failure state if unresolved
 - All business logic remains in reducers/clients, not views.
 
@@ -59,8 +59,8 @@
 
 4. Metadata lookup and mapping
 - Implement `RecordLookupClient` with provider chain:
-  - Discogs query by barcode.
-  - MusicBrainz fallback query by barcode.
+  - MusicBrainz query by barcode.
+  - Discogs fallback query by barcode (planned).
 - Normalize provider payloads into internal `Record` model.
 - Handle partial metadata (missing cover/title/artist) with safe defaults.
 

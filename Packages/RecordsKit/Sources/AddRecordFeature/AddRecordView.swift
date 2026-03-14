@@ -123,18 +123,7 @@ public struct AddRecordView: View {
 
       Spacer()
 
-      if reason != .scannerUnavailable {
-        VStack(spacing: 10) {
-          Button {
-            store.send(.retryButtonTapped)
-          } label: {
-            Text(L10n.AddRecord.Actions.retry)
-              .frame(maxWidth: .infinity)
-          }
-          .buttonStyle(.borderedProminent)
-        }
-        .padding(.bottom)
-      }
+      // No retry button in failure states; users dismiss via the sheet.
     }
   }
 

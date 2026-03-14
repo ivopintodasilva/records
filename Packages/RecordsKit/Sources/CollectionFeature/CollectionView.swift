@@ -41,21 +41,23 @@ public struct CollectionView: View {
           .padding(.bottom, 12)
         }
         .navigationTitle(L10n.Collection.Navigation.title)
-        .navigationBarTitleDisplayMode(.large)
-        .onChange(of: isSearchFieldFocused) { isFocused in
-          viewStore.send(.searchFocusChanged(isFocused), animation: .easeInOut(duration: 0.2))
-        }
-        .onChange(of: viewStore.isSearchFocused) { isFocused in
-          if isSearchFieldFocused != isFocused {
-            withAnimation(.easeInOut(duration: 0.2)) {
-              isSearchFieldFocused = isFocused
+        #if os(iOS)
+          .navigationBarTitleDisplayMode(.large)
+        #endif
+          .onChange(of: isSearchFieldFocused) { isFocused in
+            viewStore.send(.searchFocusChanged(isFocused), animation: .easeInOut(duration: 0.2))
+          }
+          .onChange(of: viewStore.isSearchFocused) { isFocused in
+            if isSearchFieldFocused != isFocused {
+              withAnimation(.easeInOut(duration: 0.2)) {
+                isSearchFieldFocused = isFocused
+              }
             }
           }
-        }
-        .sheet(store: store.scope(state: \.$addRecord, action: \.addRecord)) { addRecordStore in
-          AddRecordView(store: addRecordStore)
-            .presentationDetents([.medium])
-        }
+          .sheet(store: store.scope(state: \.$addRecord, action: \.addRecord)) { addRecordStore in
+            AddRecordView(store: addRecordStore)
+              .presentationDetents([.medium])
+          }
       })
     }
   }
@@ -134,14 +136,18 @@ public struct CollectionView: View {
           send: CollectionFeature.Action.searchQueryChanged
         )
       )
+      #if os(iOS)
       .textInputAutocapitalization(.never)
+      #endif
       .disableAutocorrection(true)
       .focused($isSearchFieldFocused)
     }
     .padding(.horizontal, 14)
     .frame(height: 56)
     .clipShape(Capsule())
-    .glassEffect(.clear, in: Capsule())
+    #if os(iOS)
+      .glassEffect(.clear, in: Capsule())
+    #endif
   }
 }
 
@@ -150,8 +156,13 @@ private extension View {
     accessibilityLabel(isSearchFocused ? L10n.Collection.Actions.closeSearch : L10n.Collection.Actions.addRecord)
   }
 
+  @ViewBuilder
   func collectionAddRecordButtonStyle() -> some View {
-    buttonStyle(.glass(.clear))
-      .clipShape(Circle())
+    #if os(iOS)
+      buttonStyle(.glass(.clear))
+        .clipShape(Circle())
+    #else
+      clipShape(Circle())
+    #endif
   }
 }

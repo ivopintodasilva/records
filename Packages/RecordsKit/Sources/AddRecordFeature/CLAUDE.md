@@ -11,4 +11,4 @@
 4. Emit `.delegate(.didResolveRecord(Record))` actions to be handled by parent modules
 
 ## Module-specific context
-- Lookup strategy: Discogs API.
+- Lookup strategy: MusicBrainz API (Discogs planned).

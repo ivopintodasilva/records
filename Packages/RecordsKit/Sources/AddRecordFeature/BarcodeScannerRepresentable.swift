@@ -71,17 +71,17 @@
         allItems _: [RecognizedItem]
       ) {
         guard !hasEmittedBarcode else { return }
-      for item in addedItems {
-        guard case let .barcode(barcode) = item,
-              let payload = barcode.payloadStringValue,
-              !payload.isEmpty
-        else {
-          continue
+        for item in addedItems {
+          guard case let .barcode(barcode) = item,
+                let payload = barcode.payloadStringValue,
+                !payload.isEmpty
+          else {
+            continue
+          }
+          hasEmittedBarcode = true
+          onBarcodeScanned(payload)
+          return
         }
-        hasEmittedBarcode = true
-        onBarcodeScanned(payload)
-        return
-      }
       }
 
       func dataScanner(

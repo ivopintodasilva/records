@@ -1,6 +1,5 @@
-#if os(iOS)
-  import SwiftUI
-  import VisionKit
+import SwiftUI
+import VisionKit
 
   /// A SwiftUI wrapper around `DataScannerViewController` that reports
   /// the first recognised barcode payload back through a callback.
@@ -10,7 +9,7 @@
   /// `.barcodeScanned` to the store; errors are forwarded as
   /// `.barcodeScanFailed`.
   @available(iOS 16.0, *)
-  struct BarcodeScannerRepresentable: UIViewControllerRepresentable {
+struct BarcodeScannerRepresentable: UIViewControllerRepresentable {
     let onBarcodeScanned: (String) -> Void
     let onError: () -> Void
 
@@ -91,5 +90,4 @@
         onError()
       }
     }
-  }
-#endif
+}

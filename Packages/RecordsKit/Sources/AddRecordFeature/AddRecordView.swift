@@ -38,23 +38,23 @@ public struct AddRecordView: View {
   @ViewBuilder
   private var scanningPhaseView: some View {
     #if os(iOS)
-    if #available(iOS 16.0, *), DataScannerViewController.isSupported {
-      ZStack(alignment: .bottom) {
-        BarcodeScannerRepresentable(
-          onBarcodeScanned: { barcode in
-            store.send(.barcodeScanned(barcode))
-          },
-          onError: {
-            store.send(.barcodeScanFailed)
-          }
-        )
-        
-        scannerOverlay
+      if #available(iOS 16.0, *), DataScannerViewController.isSupported {
+        ZStack(alignment: .bottom) {
+          BarcodeScannerRepresentable(
+            onBarcodeScanned: { barcode in
+              store.send(.barcodeScanned(barcode))
+            },
+            onError: {
+              store.send(.barcodeScanFailed)
+            }
+          )
+
+          scannerOverlay
+        }
+        .ignoresSafeArea()
+      } else {
+        unsupportedContent
       }
-      .ignoresSafeArea()
-    } else {
-      unsupportedContent
-    }
     #else
       unsupportedContent
     #endif

@@ -38,11 +38,11 @@ public struct AddRecordView: View {
   @ViewBuilder
   private var scanningPhaseView: some View {
     #if os(iOS)
-      if #available(iOS 16.0, *), DataScannerViewController.isSupported {
-        ZStack(alignment: .bottom) {
-          BarcodeScannerRepresentable(
-            onBarcodeScanned: { barcode in
-              store.send(.barcodeScanned(barcode))
+    if #available(iOS 16.0, *), DataScannerViewController.isSupported {
+      ZStack(alignment: .bottom) {
+        BarcodeScannerRepresentable(
+          onBarcodeScanned: { barcode in
+            store.send(.barcodeScanned(barcode))
             },
             onError: {
               store.send(.barcodeScanFailed)
@@ -53,10 +53,10 @@ public struct AddRecordView: View {
         }
         .ignoresSafeArea()
       } else {
-        unsupportedContent
+        scannerUnsupportedView
       }
     #else
-      unsupportedContent
+      scannerUnsupportedView
     #endif
   }
 
@@ -129,16 +129,33 @@ public struct AddRecordView: View {
 
   // MARK: - Unsupported fallback
 
-  private var unsupportedContent: some View {
-    failedPhaseView(reason: .scannerUnavailable)
+  private var scannerUnsupportedView: some View {
+    VStack(spacing: 16) {
+      Spacer()
+
+      Image(systemName: "camera.badge.ellipsis")
+        .font(.system(size: 48))
+        .foregroundStyle(.secondary)
+
+      VStack(spacing: 4) {
+        Text(L10n.AddRecord.Failed.Unsupported.title)
+          .font(.headline)
+
+        Text(L10n.AddRecord.Failed.Unsupported.message)
+          .font(.subheadline)
+          .foregroundStyle(.secondary)
+          .multilineTextAlignment(.center)
+          .padding(.horizontal, 32)
+      }
+
+      Spacer()
+    }
   }
 
   // MARK: - Helpers
 
   private func failureIconName(for reason: AddRecordFeature.FailureReason) -> String {
     switch reason {
-    case .scannerUnavailable:
-      "camera.badge.ellipsis"
     case .scanFailed:
       "barcode.viewfinder"
     case .lookupFailed:
@@ -148,8 +165,6 @@ public struct AddRecordView: View {
 
   private func failureTitle(for reason: AddRecordFeature.FailureReason) -> String {
     switch reason {
-    case .scannerUnavailable:
-      L10n.AddRecord.Failed.Unsupported.title
     case .scanFailed:
       L10n.AddRecord.Failed.Scan.title
     case .lookupFailed:
@@ -159,8 +174,6 @@ public struct AddRecordView: View {
 
   private func failureMessage(for reason: AddRecordFeature.FailureReason) -> String {
     switch reason {
-    case .scannerUnavailable:
-      L10n.AddRecord.Failed.Unsupported.message
     case .scanFailed:
       L10n.AddRecord.Failed.Scan.message
     case .lookupFailed:

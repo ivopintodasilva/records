@@ -4,13 +4,11 @@ import Foundation
 
 @Reducer
 public struct AddRecordFeature {
-  @Dependency(\.barcodeScannerClient) private var barcodeScannerClient
   @Dependency(\.dismiss) private var dismiss
   @Dependency(\.recordLookupClient) private var recordLookupClient
 
   /// Failure reasons the add-record flow can encounter.
   public enum FailureReason: Equatable, Sendable {
-    case scannerUnavailable
     case scanFailed
     case lookupFailed
   }
@@ -54,7 +52,6 @@ public struct AddRecordFeature {
     case onAppear
     case recordLookupFailed
     case recordResolved(Record)
-    case retryButtonTapped
   }
 
   public enum DelegateAction: Equatable {
@@ -70,14 +67,6 @@ public struct AddRecordFeature {
       switch action {
       case .onAppear:
         guard state.phase == .idle else { return .none }
-        guard barcodeScannerClient.isSupported() else {
-          state.phase = .failed(.scannerUnavailable)
-          return .none
-        }
-        state.phase = .scanning
-        return .none
-
-      case .retryButtonTapped:
         state.phase = .scanning
         return .none
 

@@ -6,28 +6,13 @@ final class AddRecordFeatureTests: XCTestCase {
   // MARK: - onAppear
 
   @MainActor
-  func testOnAppearStartsScanningWhenSupported() async {
+  func testOnAppearStartsScanning() async {
     let store = TestStore(initialState: AddRecordFeature.State()) {
       AddRecordFeature()
-    } withDependencies: {
-      $0.barcodeScannerClient.isSupported = { true }
     }
 
     await store.send(.onAppear) {
       $0.phase = .scanning
-    }
-  }
-
-  @MainActor
-  func testOnAppearFailsWhenUnsupported() async {
-    let store = TestStore(initialState: AddRecordFeature.State()) {
-      AddRecordFeature()
-    } withDependencies: {
-      $0.barcodeScannerClient.isSupported = { false }
-    }
-
-    await store.send(.onAppear) {
-      $0.phase = .failed(.scannerUnavailable)
     }
   }
 
@@ -54,7 +39,6 @@ final class AddRecordFeatureTests: XCTestCase {
     let store = TestStore(initialState: AddRecordFeature.State()) {
       AddRecordFeature()
     } withDependencies: {
-      $0.barcodeScannerClient.isSupported = { true }
       $0.recordLookupClient.lookup = { barcode in
         XCTAssertEqual(barcode, "724349825216")
         return resolvedRecord
@@ -95,7 +79,6 @@ final class AddRecordFeatureTests: XCTestCase {
     let store = TestStore(initialState: AddRecordFeature.State()) {
       AddRecordFeature()
     } withDependencies: {
-      $0.barcodeScannerClient.isSupported = { true }
       $0.recordLookupClient.lookup = { _ in
         throw RecordLookupClientError.notImplemented
       }
@@ -111,21 +94,6 @@ final class AddRecordFeatureTests: XCTestCase {
 
     await store.receive(.recordLookupFailed) {
       $0.phase = .failed(.lookupFailed)
-    }
-  }
-
-  // MARK: - Retry
-
-  @MainActor
-  func testRetryFromFailedRestartsScanning() async {
-    let store = TestStore(
-      initialState: AddRecordFeature.State(phase: .failed(.scanFailed))
-    ) {
-      AddRecordFeature()
-    }
-
-    await store.send(.retryButtonTapped) {
-      $0.phase = .scanning
     }
   }
 

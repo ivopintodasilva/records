@@ -14,8 +14,6 @@ public enum L10n {
     public enum Actions {
       /// Cancel
       public static let cancel = L10n.tr("Localizable", "addRecord.actions.cancel", fallback: "Cancel")
-      /// Try Again
-      public static let retry = L10n.tr("Localizable", "addRecord.actions.retry", fallback: "Try Again")
     }
     public enum Failed {
       public enum Lookup {

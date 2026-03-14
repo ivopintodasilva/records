@@ -1,10 +1,7 @@
 import ComposableArchitecture
 import Localization
 import SwiftUI
-
-#if os(iOS)
-  import VisionKit
-#endif
+import VisionKit
 
 public struct AddRecordView: View {
   private let store: StoreOf<AddRecordFeature>
@@ -37,27 +34,23 @@ public struct AddRecordView: View {
 
   @ViewBuilder
   private var scanningPhaseView: some View {
-    #if os(iOS)
-      if #available(iOS 16.0, *), DataScannerViewController.isSupported {
-        ZStack(alignment: .bottom) {
-          BarcodeScannerRepresentable(
-            onBarcodeScanned: { barcode in
-              store.send(.barcodeScanned(barcode))
-            },
-            onError: {
-              store.send(.barcodeScanFailed)
-            }
-          )
+    if DataScannerViewController.isSupported {
+      ZStack(alignment: .bottom) {
+        BarcodeScannerRepresentable(
+          onBarcodeScanned: { barcode in
+            store.send(.barcodeScanned(barcode))
+          },
+          onError: {
+            store.send(.barcodeScanFailed)
+          }
+        )
 
-          scannerOverlay
-        }
-        .ignoresSafeArea()
-      } else {
-        scannerUnsupportedView
+        scannerOverlay
       }
-    #else
+      .ignoresSafeArea()
+    } else {
       scannerUnsupportedView
-    #endif
+    }
   }
 
   private var scannerOverlay: some View {

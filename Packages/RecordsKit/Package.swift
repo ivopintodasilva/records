@@ -23,8 +23,13 @@ let package = Package(
     .target(
       name: "AddRecordFeature",
       dependencies: [
+        "Localization",
         .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
         .product(name: "Dependencies", package: "swift-dependencies"),
+      ],
+      exclude: [
+        "AGENTS.md",
+        "CLAUDE.md",
       ]
     ),
     .target(

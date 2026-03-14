@@ -38,43 +38,41 @@ public struct AddRecordView: View {
   @ViewBuilder
   private var scanningPhaseView: some View {
     #if os(iOS)
-      if #available(iOS 16.0, *), DataScannerViewController.isSupported {
-        VStack(spacing: 0) {
-          BarcodeScannerRepresentable(
-            onBarcodeScanned: { barcode in
-              store.send(.barcodeScanned(barcode))
-            },
-            onError: {
-              store.send(.barcodeScanFailed)
-            }
-          )
-
-          scannerOverlay
-        }
-      } else {
-        unsupportedContent
+    if #available(iOS 16.0, *), DataScannerViewController.isSupported {
+      ZStack(alignment: .bottom) {
+        BarcodeScannerRepresentable(
+          onBarcodeScanned: { barcode in
+            store.send(.barcodeScanned(barcode))
+          },
+          onError: {
+            store.send(.barcodeScanFailed)
+          }
+        )
+        
+        scannerOverlay
       }
+      .ignoresSafeArea()
+    } else {
+      unsupportedContent
+    }
     #else
       unsupportedContent
     #endif
   }
 
   private var scannerOverlay: some View {
-    VStack(spacing: 12) {
+    ZStack(alignment: .bottom) {
+      Rectangle()
+        .fill(.ultraThinMaterial)
+        .frame(height: 48)
+
       Text(L10n.AddRecord.Scanner.instruction)
         .font(.subheadline)
-        .foregroundStyle(.secondary)
-
-      Button(role: .cancel) {
-        store.send(.cancelButtonTapped)
-      } label: {
-        Text(L10n.AddRecord.Actions.cancel)
-          .frame(maxWidth: .infinity)
-      }
-      .buttonStyle(.bordered)
+        .foregroundStyle(.white)
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 16)
+        .padding(.horizontal, 24)
     }
-    .padding()
-    .background(.ultraThinMaterial)
   }
 
   // MARK: - Looking Up
